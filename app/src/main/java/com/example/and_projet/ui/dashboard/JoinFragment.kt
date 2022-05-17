@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.and_projet.databinding.FragmentJoinBinding
+import com.example.and_projet.utils.ListAdapter
 
 class JoinFragment : Fragment() {
 
@@ -23,11 +24,22 @@ class JoinFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val dashboardViewModel =
-            ViewModelProvider(this).get(JoinViewModel::class.java)
+            ViewModelProvider(this)[JoinViewModel::class.java]
 
         _binding = FragmentJoinBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        return root
+
+        val adapter = ListAdapter()
+        _binding!!.joinRoomFoundList.adapter = adapter
+        _binding!!.joinRoomFoundList.layoutManager = LinearLayoutManager(view?.context)
+
+        // Adds list data observer
+        dashboardViewModel.allRooms.observe(viewLifecycleOwner) { list ->
+            list.let {
+                adapter.setNotes(it)
+            }
+        }
+
+        return binding.root
     }
 
     override fun onDestroyView() {
