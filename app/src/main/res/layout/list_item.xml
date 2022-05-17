@@ -23,7 +23,7 @@
         app:layout_constraintStart_toEndOf="@id/list_item_title"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:padding="10sp"
+        android:padding="10sp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
