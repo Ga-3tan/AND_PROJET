@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.and_projet.R
 import com.example.and_projet.models.ListRecord
 import java.util.*
 
@@ -52,8 +53,8 @@ class ListAdapter(_items: List<ListRecord> = listOf()) :
         private var view: View = _view
 
         // UI elements
-        private val cellTitle = view.findViewById<TextView>(R.id.cell_title)
-        private val cellContent = view.findViewById<TextView>(R.id.cell_content)
+        private val cellTitle = view.findViewById<TextView>(R.id.list_item_title)
+        private val cellContent = view.findViewById<TextView>(R.id.list_item_content)
 
         fun bind(record: ListRecord) {
             cellTitle.text = record.title
