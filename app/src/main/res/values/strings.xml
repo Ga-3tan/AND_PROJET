@@ -17,4 +17,6 @@
     <string name="answers">Answers</string>
     <string name="enter_your_answer_here">Enter your answer here</string>
     <string name="send">Send</string>
+    <string name="title">title</string>
+    <string name="content">content</string>
 </resources>
