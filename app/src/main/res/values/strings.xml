@@ -14,9 +14,10 @@
     <string name="refresh">Refresh</string>
     <string name="room_name">Room name</string>
     <string name="create">Create</string>
-    <string name="answers">Answers</string>
+    <string name="answers">Answers :</string>
     <string name="enter_your_answer_here">Enter your answer here</string>
     <string name="send">Send</string>
     <string name="title">title</string>
     <string name="content">content</string>
+    <string name="question">Question :</string>
 </resources>
