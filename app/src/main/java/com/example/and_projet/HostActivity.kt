@@ -69,7 +69,7 @@ class HostActivity : AppCompatActivity() {
     private val connectionLifecycleCallback: ConnectionLifecycleCallback =
         object : ConnectionLifecycleCallback() {
             override fun onConnectionInitiated(endpointId: String, info: ConnectionInfo) {
-                AlertDialog.Builder(this@HostActivity)
+                /*AlertDialog.Builder(this@HostActivity)
                     .setTitle("Accept connection to " + info.endpointName)
                     .setMessage("Confirm the code matches on both devices: " + info.authenticationDigits)
                     .setPositiveButton(
@@ -84,7 +84,10 @@ class HostActivity : AppCompatActivity() {
                         Nearby.getConnectionsClient(applicationContext).rejectConnection(endpointId)
                     }
                     .setIcon(R.drawable.ic_dialog_alert)
-                    .show()
+                    .show()*/
+
+                // Automatically accept the connection on both sides.
+                Nearby.getConnectionsClient(this@HostActivity).acceptConnection(endpointId, payloadCallback)
             }
 
             override fun onConnectionResult(endpointId: String, result: ConnectionResolution) {

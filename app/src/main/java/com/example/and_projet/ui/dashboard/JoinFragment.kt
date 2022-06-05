@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnSuccessListener
 
 class JoinFragment : Fragment() {
 
+    private lateinit var dashboardViewModel: JoinViewModel
     private var _binding: FragmentJoinBinding? = null
 
     // This property is only valid between onCreateView and
@@ -39,7 +40,7 @@ class JoinFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
+        dashboardViewModel =
             ViewModelProvider(this)[JoinViewModel::class.java]
 
         _binding = FragmentJoinBinding.inflate(inflater, container, false)
@@ -104,7 +105,7 @@ class JoinFragment : Fragment() {
     private val connectionLifecycleCallback: ConnectionLifecycleCallback =
         object : ConnectionLifecycleCallback() {
             override fun onConnectionInitiated(endpointId: String, info: ConnectionInfo) {
-                AlertDialog.Builder(context)
+                /*AlertDialog.Builder(context)
                     .setTitle("Accept connection to " + info.endpointName)
                     .setMessage("Confirm the code matches on both devices: " + info.authenticationDigits)
                     .setPositiveButton(
@@ -119,7 +120,11 @@ class JoinFragment : Fragment() {
                         Nearby.getConnectionsClient(context!!).rejectConnection(endpointId)
                     }
                     .setIcon(R.drawable.ic_dialog_alert)
-                    .show()
+                    .show()*/
+
+                // Automatically accept the connection on both sides.
+                Nearby.getConnectionsClient(requireContext()).acceptConnection(endpointId, payloadCallback)
+
             }
 
             override fun onConnectionResult(endpointId: String, result: ConnectionResolution) {
@@ -154,6 +159,7 @@ class JoinFragment : Fragment() {
         override fun onPayloadReceived(endpointId: String, payload: Payload) {
             Log.i("DEBUG", String(payload.asBytes()!!, Charsets.UTF_8))
             println("DEBUG" + String(payload.asBytes()!!, Charsets.UTF_8))
+            dashboardViewModel.addRecord("RECEIVED", String(payload.asBytes()!!, Charsets.UTF_8))
         }
 
         override fun onPayloadTransferUpdate(endpointId: String, update: PayloadTransferUpdate) {

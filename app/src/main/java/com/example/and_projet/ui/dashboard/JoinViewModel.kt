@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.example.and_projet.models.ListRecord
 
 class JoinViewModel : ViewModel() {
-    val allRooms: LiveData<List<ListRecord>> get() = _allRooms
-    private val _allRooms = MutableLiveData(listOf<ListRecord>(
+    val allRooms: LiveData<MutableList<ListRecord>> get() = _allRooms
+    private val _allRooms = MutableLiveData(mutableListOf(
         ListRecord("My Room", "Content"),
         ListRecord("Jean Jacques", "Super question"),
         ListRecord("Sophie", "Hello friends"),
@@ -15,5 +15,7 @@ class JoinViewModel : ViewModel() {
     ))
 
     fun addRecord(title: String, content: String) {
+        _allRooms.value?.add(ListRecord(title, content))
+        _allRooms.value = _allRooms.value
     }
 }
