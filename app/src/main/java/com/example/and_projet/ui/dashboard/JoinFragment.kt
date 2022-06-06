@@ -19,11 +19,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.and_projet.databinding.FragmentJoinBinding
+import com.example.and_projet.models.ListRecord
 import com.example.and_projet.utils.ListAdapter
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.gson.Gson
 
 
 class JoinFragment : Fragment() {
@@ -157,15 +159,15 @@ class JoinFragment : Fragment() {
 
     private val payloadCallback: PayloadCallback = object : PayloadCallback() {
         override fun onPayloadReceived(endpointId: String, payload: Payload) {
-            Log.i("DEBUG", String(payload.asBytes()!!, Charsets.UTF_8))
-            println("DEBUG" + String(payload.asBytes()!!, Charsets.UTF_8))
-            dashboardViewModel.addRecord("RECEIVED", String(payload.asBytes()!!, Charsets.UTF_8))
+            Log.i("DEBUG", "payload received " + String(payload.asBytes()!!, Charsets.UTF_8))
+            val roomInfo = Gson().fromJson(String(payload.asBytes()!!, Charsets.UTF_8), ListRecord::class.java)
+            dashboardViewModel.addRecord(roomInfo.title, roomInfo.content)
         }
 
         override fun onPayloadTransferUpdate(endpointId: String, update: PayloadTransferUpdate) {
             // Bytes payloads are sent as a single chunk, so you'll receive a SUCCESS update immediately
             // after the call to onPayloadReceived().
-            Log.i("DEBUG", endpointId)
+            Log.i("DEBUG", "received from endpointId $endpointId")
         }
     }
 

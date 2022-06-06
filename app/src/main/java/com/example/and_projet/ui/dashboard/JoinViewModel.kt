@@ -16,6 +16,7 @@ class JoinViewModel : ViewModel() {
 
     fun addRecord(title: String, content: String) {
         _allRooms.value?.add(ListRecord(title, content))
-        _allRooms.value = _allRooms.value
+        //_allRooms.value = _allRooms.value
+        _allRooms.postValue(_allRooms.value)
     }
 }

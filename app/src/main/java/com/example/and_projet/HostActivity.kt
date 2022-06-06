@@ -1,10 +1,7 @@
 package com.example.and_projet
 
 import android.Manifest
-import android.R
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -19,6 +16,8 @@ import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.gson.Gson
+import com.example.and_projet.models.ListRecord
 import kotlin.text.Charsets.UTF_8
 
 
@@ -95,6 +94,7 @@ class HostActivity : AppCompatActivity() {
                     ConnectionsStatusCodes.STATUS_OK -> {
                         // We're connected! Can now start sending and receiving data.
                         Log.i("DEBUG", "ConnectionsStatusCodes.STATUS_OK")
+                        sendRoomInfo(endpointId)
                     }
                     ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED -> {
                         // The connection was rejected by one or both sides.
@@ -117,6 +117,15 @@ class HostActivity : AppCompatActivity() {
             }
 
         }
+
+    private fun sendRoomInfo(endpointId: String) {
+        val data = Gson().toJson(ListRecord(roomName, question))
+        val payload = data.toByteArray(UTF_8)
+            Nearby.getConnectionsClient(this@HostActivity).sendPayload(
+            endpointId,
+            Payload.fromBytes(payload)
+        )
+    }
 
     private val payloadCallback: PayloadCallback = object : PayloadCallback() {
         override fun onPayloadReceived(endpointId: String, payload: Payload) {
