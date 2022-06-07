@@ -49,8 +49,8 @@ class HostActivity : AppCompatActivity() {
         binding.hostQuestionContent.text = question
 
         val adapter = ListAdapter {}
-        binding!!.hostAnswerList.adapter = adapter
-        binding!!.hostAnswerList.layoutManager = LinearLayoutManager(this)
+        binding.hostAnswerList.adapter = adapter
+        binding.hostAnswerList.layoutManager = LinearLayoutManager(this)
 
         // Adds list data observer
         hostViewModel.quizAnswers.observe(this) { list ->
@@ -140,7 +140,7 @@ class HostActivity : AppCompatActivity() {
     private fun sendRoomInfo(endpointId: String) {
         val data = Gson().toJson(ListRecord(roomName, question, endpointId))
         val payload = data.toByteArray(UTF_8)
-            Nearby.getConnectionsClient(this@HostActivity).sendPayload(
+        Nearby.getConnectionsClient(this@HostActivity).sendPayload(
             endpointId,
             Payload.fromBytes(payload)
         )
