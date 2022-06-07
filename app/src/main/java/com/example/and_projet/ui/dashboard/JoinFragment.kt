@@ -1,10 +1,8 @@
 package com.example.and_projet.ui.dashboard
 
 import android.Manifest
-import android.R
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -13,11 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.CallSuper
-import androidx.core.app.ActivityCompat.recreate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.and_projet.ParticipantActivity
 import com.example.and_projet.databinding.FragmentJoinBinding
 import com.example.and_projet.models.ListRecord
 import com.example.and_projet.utils.ListAdapter
@@ -47,7 +45,7 @@ class JoinFragment : Fragment() {
 
         _binding = FragmentJoinBinding.inflate(inflater, container, false)
 
-        val adapter = ListAdapter() { item ->
+        val adapter = ListAdapter { item ->
             Toast.makeText(view?.context, item.title, Toast.LENGTH_SHORT).show()
             Nearby.getConnectionsClient(view?.context!!)
                 .requestConnection("HOST", item.endPointId, connectionLifecycleCallback)
@@ -56,6 +54,9 @@ class JoinFragment : Fragment() {
                         // We successfully requested a connection. Now both sides
                         // must accept before the connection is established.
                         Log.i("DEBUG", "CONNECTED to ${item.endPointId}")
+                        val intent = Intent(activity, ParticipantActivity::class.java)
+                        intent.putExtra(ParticipantActivity.ENDPOINT_ID_KEY, item.endPointId)
+                        startActivity(intent)
                     })
                 .addOnFailureListener(
                     OnFailureListener { e: java.lang.Exception? ->
@@ -68,7 +69,7 @@ class JoinFragment : Fragment() {
         // Adds list data observer
         dashboardViewModel.allRooms.observe(viewLifecycleOwner) { list ->
             list.let {
-                adapter.setNotes(it)
+                adapter.setRecords(it)
             }
         }
 
