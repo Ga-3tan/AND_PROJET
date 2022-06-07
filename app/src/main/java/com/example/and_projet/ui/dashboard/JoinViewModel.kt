@@ -8,11 +8,11 @@ import com.example.and_projet.models.ListRecord
 
 class JoinViewModel : ViewModel() {
     val allRooms: LiveData<MutableList<ListRecord>> get() = _allRooms
-    private val _allRooms = MutableLiveData(mutableListOf<ListRecord>(ListRecord("AAA", "NULL")))
+    private val _allRooms = MutableLiveData(mutableListOf(ListRecord("Default title", "Default content", "Default ID")))
 
     fun addRecord(title: String, endPointId: String) {
         val ar = _allRooms.value!!.toMutableList() // copy is needed, BUG ?
-        ar.add(ListRecord(title, endPointId))
+        ar.add(ListRecord(title, "", endPointId))
         _allRooms.postValue(ar)
     }
 }

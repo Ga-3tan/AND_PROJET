@@ -2,6 +2,7 @@ package com.example.and_projet
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +12,8 @@ import androidx.annotation.CallSuper
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.and_projet.databinding.ActivityHostBinding
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
@@ -18,6 +21,7 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.gson.Gson
 import com.example.and_projet.models.ListRecord
+import com.example.and_projet.utils.ListAdapter
 import kotlin.text.Charsets.UTF_8
 
 
@@ -26,6 +30,7 @@ class HostActivity : AppCompatActivity() {
     lateinit var question: String
     lateinit var roomName: String
 
+    private lateinit var hostViewModel: HostViewModel
     private lateinit var binding : ActivityHostBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,12 +39,25 @@ class HostActivity : AppCompatActivity() {
         binding = ActivityHostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        hostViewModel = ViewModelProvider(this)[HostViewModel::class.java]
+
         question = intent.getStringExtra(ROOM_QUESTION_PARAMETER_KEY)!!
         roomName = intent.getStringExtra(ROOM_NAME_PARAMETER_KEY)!!
 
         title = roomName
 
         binding.hostQuestionContent.text = question
+
+        val adapter = ListAdapter {}
+        binding!!.hostAnswerList.adapter = adapter
+        binding!!.hostAnswerList.layoutManager = LinearLayoutManager(this)
+
+        // Adds list data observer
+        hostViewModel.quizAnswers.observe(this) { list ->
+            list.let {
+                adapter.setRecords(it)
+            }
+        }
 
         startAdvertising()
     }
@@ -120,7 +138,7 @@ class HostActivity : AppCompatActivity() {
         }
 
     private fun sendRoomInfo(endpointId: String) {
-        val data = Gson().toJson(ListRecord(roomName, endpointId))
+        val data = Gson().toJson(ListRecord(roomName, question, endpointId))
         val payload = data.toByteArray(UTF_8)
             Nearby.getConnectionsClient(this@HostActivity).sendPayload(
             endpointId,
@@ -130,7 +148,8 @@ class HostActivity : AppCompatActivity() {
 
     private val payloadCallback: PayloadCallback = object : PayloadCallback() {
         override fun onPayloadReceived(endpointId: String, payload: Payload) {
-            Log.i("DEBUG", String(payload.asBytes()!!, Charsets.UTF_8))
+            val data = Gson().fromJson(String(payload.asBytes()!!, UTF_8), ListRecord::class.java)
+            hostViewModel.addAnswer(data.title, data.content, endpointId)
         }
 
         override fun onPayloadTransferUpdate(endpointId: String, update: PayloadTransferUpdate) {
@@ -184,7 +203,6 @@ class HostActivity : AppCompatActivity() {
         for (grantResult in grantResults) {
             if (grantResult == PackageManager.PERMISSION_DENIED) {
                 Toast.makeText(applicationContext, "MISSING PERMISSION", Toast.LENGTH_LONG).show()
-//                finish()
                 return
             }
         }
