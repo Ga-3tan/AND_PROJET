@@ -87,6 +87,7 @@ class HostActivity : AppCompatActivity() {
 
                 // Automatically accept the connection on both sides.
                 Nearby.getConnectionsClient(this@HostActivity).acceptConnection(endpointId, payloadCallback)
+                Log.i("DEBUG", "CONNECTED TO NEW DEVICE")
             }
 
             override fun onConnectionResult(endpointId: String, result: ConnectionResolution) {
@@ -119,7 +120,7 @@ class HostActivity : AppCompatActivity() {
         }
 
     private fun sendRoomInfo(endpointId: String) {
-        val data = Gson().toJson(ListRecord(roomName, question))
+        val data = Gson().toJson(ListRecord(roomName, endpointId))
         val payload = data.toByteArray(UTF_8)
             Nearby.getConnectionsClient(this@HostActivity).sendPayload(
             endpointId,

@@ -47,7 +47,21 @@ class JoinFragment : Fragment() {
 
         _binding = FragmentJoinBinding.inflate(inflater, container, false)
 
-        val adapter = ListAdapter()
+        val adapter = ListAdapter() { item ->
+            Toast.makeText(view?.context, item.title, Toast.LENGTH_SHORT).show()
+            Nearby.getConnectionsClient(view?.context!!)
+                .requestConnection("HOST", item.endPointId, connectionLifecycleCallback)
+                .addOnSuccessListener(
+                    OnSuccessListener { unused: Void? ->
+                        // We successfully requested a connection. Now both sides
+                        // must accept before the connection is established.
+                        Log.i("DEBUG", "CONNECTED to ${item.endPointId}")
+                    })
+                .addOnFailureListener(
+                    OnFailureListener { e: java.lang.Exception? ->
+                        // Nearby Connections failed to request the connection.
+                    })
+        }
         _binding!!.joinRoomFoundList.adapter = adapter
         _binding!!.joinRoomFoundList.layoutManager = LinearLayoutManager(view?.context)
 
@@ -86,17 +100,8 @@ class JoinFragment : Fragment() {
             override fun onEndpointFound(endpointId: String, info: DiscoveredEndpointInfo) {
                 // An endpoint was found. We request a connection to it.
                 Log.i("DEBUG", "ENDPOINT FOUND $endpointId, ${info.endpointName}") // TODO
-                Nearby.getConnectionsClient(context!!)
-                    .requestConnection("HOST", endpointId, connectionLifecycleCallback)
-                    .addOnSuccessListener(
-                        OnSuccessListener { unused: Void? ->
-                            // We successfully requested a connection. Now both sides
-                            // must accept before the connection is established.
-                        })
-                    .addOnFailureListener(
-                        OnFailureListener { e: java.lang.Exception? ->
-                            // Nearby Connections failed to request the connection.
-                        })
+
+                dashboardViewModel.addRecord(info.endpointName, endpointId)
             }
 
             override fun onEndpointLost(endpointId: String) {
@@ -157,11 +162,12 @@ class JoinFragment : Fragment() {
             }
         }
 
+
+    // TODO PLACE THIS IN PARTICIPANT ACTIVITY AND ANOTHER IN HOST ACTIVITY
     private val payloadCallback: PayloadCallback = object : PayloadCallback() {
         override fun onPayloadReceived(endpointId: String, payload: Payload) {
             Log.i("DEBUG", "payload received " + String(payload.asBytes()!!, Charsets.UTF_8))
             val roomInfo = Gson().fromJson(String(payload.asBytes()!!, Charsets.UTF_8), ListRecord::class.java)
-            dashboardViewModel.addRecord(roomInfo.title, roomInfo.content)
         }
 
         override fun onPayloadTransferUpdate(endpointId: String, update: PayloadTransferUpdate) {
