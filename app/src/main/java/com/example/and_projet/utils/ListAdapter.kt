@@ -14,8 +14,11 @@ import java.util.*
  * Authors : Zwick Gaétan, Maziero Marco, Lamrani Soulaymane
  * Date : 10.05.2022
  */
-class ListAdapter(_items: List<ListRecord> = listOf()) :
+class ListAdapter(_items: List<ListRecord> = listOf(), private val listener: (ListRecord) -> Unit) :
     RecyclerView.Adapter<ListAdapter.ViewHolder>() {
+
+//    private val mOnClickListener: View.OnClickListener = MyOnClickListener()
+
     // Items in the list
     private var items = listOf<ListRecord>()
         set(value) {
@@ -41,7 +44,9 @@ class ListAdapter(_items: List<ListRecord> = listOf()) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position])
+        val item = items[position]
+        holder.bind(item)
+        holder.itemView.setOnClickListener { listener(item) }
     }
 
     override fun getItemCount() = items.size
@@ -54,11 +59,9 @@ class ListAdapter(_items: List<ListRecord> = listOf()) :
 
         // UI elements
         private val cellTitle = view.findViewById<TextView>(R.id.list_item_title)
-        private val cellContent = view.findViewById<TextView>(R.id.list_item_content)
 
         fun bind(record: ListRecord) {
             cellTitle.text = record.title
-            cellContent.text = record.content
         }
     }
 
@@ -77,14 +80,14 @@ class ListAdapter(_items: List<ListRecord> = listOf()) :
             val oldRecord = oldList[oldItemPosition]
             val newRecord = newList[newItemPosition]
 
-            return oldRecord.title == newRecord.title && oldRecord.content == newRecord.content
+            return oldRecord.title == newRecord.title && oldRecord.endPointId == newRecord.title
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             val oldRecord = oldList[oldItemPosition]
             val newRecord = newList[newItemPosition]
 
-            return oldRecord::class == newRecord::class && oldRecord.title == newRecord.title
+            return oldRecord::class == newRecord::class && oldRecord.title == newRecord.title && oldRecord.endPointId == newRecord.title
         }
     }
 }
