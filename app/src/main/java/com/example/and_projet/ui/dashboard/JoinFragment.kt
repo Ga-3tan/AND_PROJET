@@ -5,6 +5,7 @@ import android.R
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.and_projet.ParticipantActivity
 import com.example.and_projet.databinding.FragmentJoinBinding
 import com.example.and_projet.models.ListRecord
 import com.example.and_projet.utils.ListAdapter
@@ -49,7 +51,14 @@ class JoinFragment : Fragment() {
 
         val adapter = ListAdapter() { item ->
             Toast.makeText(view?.context, item.title, Toast.LENGTH_SHORT).show()
-            Nearby.getConnectionsClient(view?.context!!)
+            val intent = Intent(activity, ParticipantActivity::class.java)
+
+            intent.putExtra("title", item.title)
+            intent.putExtra("endPointId", item.endPointId)
+
+            startActivity(intent)
+
+            /*Nearby.getConnectionsClient(view?.context!!)
                 .requestConnection("HOST", item.endPointId, connectionLifecycleCallback)
                 .addOnSuccessListener(
                     OnSuccessListener { unused: Void? ->
@@ -60,7 +69,7 @@ class JoinFragment : Fragment() {
                 .addOnFailureListener(
                     OnFailureListener { e: java.lang.Exception? ->
                         // Nearby Connections failed to request the connection.
-                    })
+                    })*/
         }
         _binding!!.joinRoomFoundList.adapter = adapter
         _binding!!.joinRoomFoundList.layoutManager = LinearLayoutManager(view?.context)

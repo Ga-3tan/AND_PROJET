@@ -120,7 +120,7 @@ class HostActivity : AppCompatActivity() {
         }
 
     private fun sendRoomInfo(endpointId: String) {
-        val data = Gson().toJson(ListRecord(roomName, endpointId))
+        val data = Gson().toJson(ListRecord(roomName, question))
         val payload = data.toByteArray(UTF_8)
             Nearby.getConnectionsClient(this@HostActivity).sendPayload(
             endpointId,
