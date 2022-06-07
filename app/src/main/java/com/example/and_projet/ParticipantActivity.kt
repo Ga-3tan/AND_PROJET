@@ -1,16 +1,11 @@
 package com.example.and_projet
 
-import android.os.Binder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
-import com.example.and_projet.databinding.ActivityHostBinding
 import com.example.and_projet.databinding.ActivityParticipantBinding
 import android.util.Log
 import android.view.View
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.and_projet.models.ListRecord
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
@@ -19,7 +14,6 @@ import com.google.android.gms.tasks.OnSuccessListener
 import com.google.gson.Gson
 
 class ParticipantActivity : AppCompatActivity() {
-
     private lateinit var binding : ActivityParticipantBinding
     private lateinit var participantViewModel: ParticipantViewModel
 
@@ -27,7 +21,6 @@ class ParticipantActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityParticipantBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
