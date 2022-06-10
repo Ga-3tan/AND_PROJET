@@ -1,4 +1,4 @@
-package com.example.and_projet.ui.home
+package com.example.and_projet.view.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,9 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.and_projet.HostActivity
+import com.example.and_projet.view.activities.HostActivity
 import com.example.and_projet.databinding.FragmentCreateBinding
 
+/**
+ * Authors : Zwick Gaétan, Maziero Marco, Lamrani Soulaymane
+ * Date : 10.06.2022
+ */
 class CreateFragment : Fragment() {
 
     private var _binding: FragmentCreateBinding? = null
@@ -23,9 +27,6 @@ class CreateFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(CreateViewModel::class.java)
-
         _binding = FragmentCreateBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -38,7 +39,6 @@ class CreateFragment : Fragment() {
             intent.putExtra(HostActivity.ROOM_QUESTION_PARAMETER_KEY, question)
 
             startActivity(intent)
-
         }
 
         return binding.root

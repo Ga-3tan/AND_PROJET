@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_create"
-        android:name="com.example.and_projet.ui.home.CreateFragment"
+        android:name="com.example.and_projet.view.fragments.CreateFragment"
         android:label="@string/title_create"
         tools:layout="@layout/fragment_create" />
 
     <fragment
         android:id="@+id/navigation_join"
-        android:name="com.example.and_projet.ui.dashboard.JoinFragment"
+        android:name="com.example.and_projet.view.fragments.JoinFragment"
         android:label="@string/title_join"
         tools:layout="@layout/fragment_join" />
 

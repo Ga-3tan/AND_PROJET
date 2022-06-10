@@ -1,48 +1,39 @@
-package com.example.and_projet
+package com.example.and_projet.view.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.and_projet.databinding.ActivityParticipantBinding
 import android.util.Log
-import android.view.View
-import com.example.and_projet.models.ListRecord
+import com.example.and_projet.viewmodel.ParticipantViewModel
+import com.example.and_projet.model.ListRecord
+import com.example.and_projet.viewmodel.HostViewModelFactory
+import com.example.and_projet.viewmodel.ParticipantViewModelFactory
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.gson.Gson
 
+/**
+ * Authors : Zwick Gaétan, Maziero Marco, Lamrani Soulaymane
+ * Date : 10.06.2022
+ */
 class ParticipantActivity : AppCompatActivity() {
     private lateinit var binding : ActivityParticipantBinding
     private lateinit var participantViewModel: ParticipantViewModel
-
-    lateinit var endPointId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityParticipantBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        endPointId = intent.getStringExtra(ENDPOINT_ID_KEY)!!
+        // Retrieves the endpoint id from previous intent
+        val endPointId = intent.getStringExtra(ENDPOINT_ID_KEY)!!
 
-        Nearby.getConnectionsClient(this@ParticipantActivity)
-            .requestConnection("HOST", endPointId, connectionLifecycleCallback)
-            .addOnSuccessListener(
-                OnSuccessListener { unused: Void? ->
-                    // We successfully requested a connection. Now both sides
-                    // must accept before the connection is established.
-                    Log.i("DEBUG", "CONNECTED to $endPointId in the room")
-                })
-            .addOnFailureListener(
-                OnFailureListener { e: java.lang.Exception? ->
-                    // Nearby Connections failed to request the connection.
-                })
-
-        participantViewModel = ViewModelProvider(this)[ParticipantViewModel::class.java]
-
-        // Retrieves the endpoint ID from extras
-        participantViewModel.endpointId = intent.getStringExtra(ENDPOINT_ID_KEY)!!
+        // Gets the view model instance
+        val viewModelFactory = ParticipantViewModelFactory(endPointId)
+        participantViewModel = ViewModelProvider(this, viewModelFactory)[ParticipantViewModel::class.java]
 
         // Sends answer payload on button click
         binding.participantAnswerButton.setOnClickListener {
@@ -52,35 +43,30 @@ class ParticipantActivity : AppCompatActivity() {
                 this@ParticipantActivity)
             finish()
         }
+
+        startDiscovery()
     }
 
-    companion object {
-        const val ENDPOINT_ID_KEY = "ENDPOINT_ID"
+    private fun startDiscovery() {
+        Nearby.getConnectionsClient(this@ParticipantActivity)
+            .requestConnection("HOST", participantViewModel.endpointId, connectionLifecycleCallback)
+            .addOnSuccessListener(
+                OnSuccessListener { unused: Void? ->
+                    // We successfully requested a connection. Now both sides
+                    // must accept before the connection is established.
+                    Log.i("DEBUG", "CONNECTED to ${participantViewModel.endpointId} in the room")
+                })
+            .addOnFailureListener(
+                OnFailureListener { e: java.lang.Exception? ->
+                    // Nearby Connections failed to request the connection.
+                })
     }
 
     private val connectionLifecycleCallback: ConnectionLifecycleCallback =
         object : ConnectionLifecycleCallback() {
             override fun onConnectionInitiated(endpointId: String, info: ConnectionInfo) {
-                /*AlertDialog.Builder(context)
-                    .setTitle("Accept connection to " + info.endpointName)
-                    .setMessage("Confirm the code matches on both devices: " + info.authenticationDigits)
-                    .setPositiveButton(
-                        "Accept"
-                    ) { dialog: DialogInterface?, which: Int ->  // The user confirmed, so we can accept the connection.
-                        Nearby.getConnectionsClient(context!!)
-                            .acceptConnection(endpointId, payloadCallback)
-                    }
-                    .setNegativeButton(
-                        R.string.cancel
-                    ) { dialog: DialogInterface?, which: Int ->  // The user canceled, so we should reject the connection.
-                        Nearby.getConnectionsClient(context!!).rejectConnection(endpointId)
-                    }
-                    .setIcon(R.drawable.ic_dialog_alert)
-                    .show()*/
-
                 // Automatically accept the connection on both sides.
                 Nearby.getConnectionsClient(this@ParticipantActivity).acceptConnection(endpointId, payloadCallback)
-
             }
 
             override fun onConnectionResult(endpointId: String, result: ConnectionResolution) {
@@ -107,6 +93,7 @@ class ParticipantActivity : AppCompatActivity() {
             override fun onDisconnected(endpointId: String) {
                 // We've been disconnected from this endpoint. No more data can be
                 // sent or received.
+                finish()
                 Log.i("DEBUG", endpointId)
             }
         }
@@ -125,12 +112,21 @@ class ParticipantActivity : AppCompatActivity() {
         }
     }
 
-    private fun disconnect() {
-        Nearby.getConnectionsClient(this@ParticipantActivity).disconnectFromEndpoint(endPointId)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         disconnect()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        disconnect()
+    }
+
+    private fun disconnect() {
+        Nearby.getConnectionsClient(this@ParticipantActivity).disconnectFromEndpoint(participantViewModel.endpointId)
+    }
+
+    companion object {
+        const val ENDPOINT_ID_KEY = "ENDPOINT_ID"
     }
 }

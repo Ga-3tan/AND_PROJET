@@ -1,9 +1,10 @@
-package com.example.and_projet.ui.dashboard
+package com.example.and_projet.view.fragments
 
 import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,34 +12,46 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.CallSuper
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.and_projet.ParticipantActivity
+import com.example.and_projet.view.activities.ParticipantActivity
 import com.example.and_projet.databinding.FragmentJoinBinding
 import com.example.and_projet.utils.ListAdapter
+import com.example.and_projet.viewmodel.JoinViewModel
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
 
+/**
+ * Authors : Zwick Gaétan, Maziero Marco, Lamrani Soulaymane
+ * Date : 10.06.2022
+ */
 class JoinFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: JoinViewModel
+    private val REQUEST_CODE_REQUIRED_PERMISSIONS = 1
+    private val REQUIRED_PERMISSIONS: Array<String> = arrayOf<String>(
+        Manifest.permission.BLUETOOTH,
+        Manifest.permission.BLUETOOTH_ADMIN,
+        Manifest.permission.ACCESS_WIFI_STATE,
+        Manifest.permission.CHANGE_WIFI_STATE,
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION
+    )
+    private lateinit var joinViewModel: JoinViewModel
     private var _binding: FragmentJoinBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private lateinit var title: String
-    private lateinit var content: String
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        dashboardViewModel =
+        joinViewModel =
             ViewModelProvider(this)[JoinViewModel::class.java]
 
         _binding = FragmentJoinBinding.inflate(inflater, container, false)
@@ -53,7 +66,7 @@ class JoinFragment : Fragment() {
         _binding!!.joinRoomFoundList.layoutManager = LinearLayoutManager(view?.context)
 
         // Adds list data observer
-        dashboardViewModel.allRooms.observe(viewLifecycleOwner) { list ->
+        joinViewModel.allRooms.observe(viewLifecycleOwner) { list ->
             list.let {
                 adapter.setRecords(it)
             }
@@ -77,7 +90,7 @@ class JoinFragment : Fragment() {
     private fun startDiscovery(context: Context) {
         val discoveryOptions = DiscoveryOptions.Builder().setStrategy(Strategy.P2P_STAR).build()
         Nearby.getConnectionsClient(context)
-            .startDiscovery("com.example.and_projet", endpointDiscoveryCallback, discoveryOptions)
+            .startDiscovery("and_projet", endpointDiscoveryCallback, discoveryOptions)
             .addOnSuccessListener { unused: Void? -> }
             .addOnFailureListener { e: Exception? -> }
     }
@@ -88,27 +101,16 @@ class JoinFragment : Fragment() {
                 // An endpoint was found. We request a connection to it.
                 Log.i("DEBUG", "ENDPOINT FOUND $endpointId, ${info.endpointName}") // TODO
 
-                dashboardViewModel.addRecord(info.endpointName, "", endpointId)
+                joinViewModel.addRecord(info.endpointName, "", endpointId)
             }
 
+            @RequiresApi(Build.VERSION_CODES.N)
             override fun onEndpointLost(endpointId: String) {
                 // A previously discovered endpoint has gone away.
                 Log.i("DEBUG", "ENDPOINT LOST $endpointId")
-                // dashboardViewModel.removeRecord(endpointId)
+                joinViewModel.removeRecord(endpointId)
             }
         }
-
-    // PERMISSIONS
-    private val REQUIRED_PERMISSIONS: Array<String> = arrayOf<String>(
-        Manifest.permission.BLUETOOTH,
-        Manifest.permission.BLUETOOTH_ADMIN,
-        Manifest.permission.ACCESS_WIFI_STATE,
-        Manifest.permission.CHANGE_WIFI_STATE,
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.ACCESS_FINE_LOCATION
-    )
-
-    private val REQUEST_CODE_REQUIRED_PERMISSIONS = 1
 
     override fun onStart() {
         super.onStart()
@@ -142,7 +144,6 @@ class JoinFragment : Fragment() {
         for (grantResult in grantResults) {
             if (grantResult == PackageManager.PERMISSION_DENIED) {
                 Toast.makeText(requireContext(), "MISSING PERMISSION", Toast.LENGTH_LONG).show()
-//                finish()
                 return
             }
         }

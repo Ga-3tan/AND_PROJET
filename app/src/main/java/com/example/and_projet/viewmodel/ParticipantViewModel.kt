@@ -1,17 +1,17 @@
-package com.example.and_projet
+package com.example.and_projet.viewmodel
 
-import android.app.Application
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.and_projet.models.ListRecord
+import com.example.and_projet.model.ListRecord
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.Payload
 import com.google.gson.Gson
 
-class ParticipantViewModel : ViewModel() {
-    var endpointId: String = ""
+/**
+ * Authors : Zwick Gaétan, Maziero Marco, Lamrani Soulaymane
+ * Date : 10.06.2022
+ */
+class ParticipantViewModel(val endpointId: String) : ViewModel() {
 
     fun sendAnswer(userName: String, answer: String, context: Context) {
         val data = Gson().toJson(ListRecord(userName, answer, ""))
