@@ -1,14 +1,13 @@
-package com.example.and_projet.view.activities
+package com.heigvd.and_projet.view.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.and_projet.databinding.ActivityParticipantBinding
 import android.util.Log
-import com.example.and_projet.viewmodel.ParticipantViewModel
-import com.example.and_projet.model.ListRecord
-import com.example.and_projet.viewmodel.HostViewModelFactory
-import com.example.and_projet.viewmodel.ParticipantViewModelFactory
+import com.heigvd.and_projet.viewmodel.ParticipantViewModel
+import com.heigvd.and_projet.model.ListRecord
+import com.heigvd.and_projet.viewmodel.ParticipantViewModelFactory
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
 import com.google.android.gms.tasks.OnFailureListener
@@ -23,6 +22,9 @@ class ParticipantActivity : AppCompatActivity() {
     private lateinit var binding : ActivityParticipantBinding
     private lateinit var participantViewModel: ParticipantViewModel
 
+    /**
+     * Called on the creation of the activity lifecycle
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityParticipantBinding.inflate(layoutInflater)
@@ -44,9 +46,13 @@ class ParticipantActivity : AppCompatActivity() {
             finish()
         }
 
+        // Discovers new BLE hosts
         startDiscovery()
     }
 
+    /**
+     * Discovers the nearby BLE hosts
+     */
     private fun startDiscovery() {
         Nearby.getConnectionsClient(this@ParticipantActivity)
             .requestConnection("HOST", participantViewModel.endpointId, connectionLifecycleCallback)
@@ -62,6 +68,10 @@ class ParticipantActivity : AppCompatActivity() {
                 })
     }
 
+    /**
+     * This is the callback used during BLE connections
+     * When connected to a host, receives directly the room data
+     */
     private val connectionLifecycleCallback: ConnectionLifecycleCallback =
         object : ConnectionLifecycleCallback() {
             override fun onConnectionInitiated(endpointId: String, info: ConnectionInfo) {
@@ -98,6 +108,9 @@ class ParticipantActivity : AppCompatActivity() {
             }
         }
 
+    /**
+     * Handles the data reception and send
+     */
     private val payloadCallback: PayloadCallback = object : PayloadCallback() {
         override fun onPayloadReceived(endpointId: String, payload: Payload) {
             Log.i("DEBUG", "payload received " + String(payload.asBytes()!!, Charsets.UTF_8))
@@ -112,16 +125,25 @@ class ParticipantActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Called on activity destroy
+     */
     override fun onDestroy() {
         super.onDestroy()
         disconnect()
     }
 
+    /**
+     * Called on activity pause
+     */
     override fun onPause() {
         super.onPause()
         disconnect()
     }
 
+    /**
+     * When the activity is killed or stopped, it disconnects the BLE endpoint from the host
+     */
     private fun disconnect() {
         Nearby.getConnectionsClient(this@ParticipantActivity).disconnectFromEndpoint(participantViewModel.endpointId)
     }

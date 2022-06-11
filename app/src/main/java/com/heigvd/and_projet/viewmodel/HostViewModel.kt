@@ -1,10 +1,10 @@
-package com.example.and_projet.viewmodel
+package com.heigvd.and_projet.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.and_projet.model.ListRecord
+import com.heigvd.and_projet.model.ListRecord
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
 import com.google.gson.Gson
@@ -17,6 +17,9 @@ class HostViewModel(val roomName: String, val roomQuestion: String) : ViewModel(
     val quizAnswers: LiveData<MutableList<ListRecord>> get() =  _quizAnswers
     private val _quizAnswers: MutableLiveData<MutableList<ListRecord>> = MutableLiveData(mutableListOf())
 
+    /**
+     * Adds a given answer to the list
+     */
     fun addAnswer(username: String, content: String, endpointId: String) {
         val newList = _quizAnswers.value!!.toMutableList()
         if (newList.none{item -> item.endPointId == endpointId}) {
@@ -25,6 +28,9 @@ class HostViewModel(val roomName: String, val roomQuestion: String) : ViewModel(
         _quizAnswers.postValue(newList)
     }
 
+    /**
+     * Sends the current room data to the given BLE endpoint
+     */
     fun sendRoomInfo(endpointId: String, context: Context) {
         val data = Gson().toJson(ListRecord(roomName, roomQuestion, endpointId))
         val payload = data.toByteArray(Charsets.UTF_8)

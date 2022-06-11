@@ -1,4 +1,4 @@
-package com.example.and_projet
+package com.heigvd.and_projet
 
 import org.junit.Test
 

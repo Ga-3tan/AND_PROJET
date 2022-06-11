@@ -1,4 +1,4 @@
-package com.example.and_projet.viewmodel
+package com.heigvd.and_projet.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

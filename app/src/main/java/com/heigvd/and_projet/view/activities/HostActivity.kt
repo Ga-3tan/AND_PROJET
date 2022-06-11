@@ -1,4 +1,4 @@
-package com.example.and_projet.view.activities
+package com.heigvd.and_projet.view.activities
 
 import android.Manifest
 import android.content.Context
@@ -13,16 +13,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.and_projet.viewmodel.HostViewModel
+import com.heigvd.and_projet.viewmodel.HostViewModel
 import com.example.and_projet.databinding.ActivityHostBinding
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.gson.Gson
-import com.example.and_projet.model.ListRecord
-import com.example.and_projet.utils.ListAdapter
-import com.example.and_projet.viewmodel.HostViewModelFactory
+import com.heigvd.and_projet.model.ListRecord
+import com.heigvd.and_projet.utils.ListAdapter
+import com.heigvd.and_projet.viewmodel.HostViewModelFactory
 
 /**
  * Authors : Zwick Gaétan, Maziero Marco, Lamrani Soulaymane
@@ -49,19 +49,23 @@ class HostActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Retrieves the UI bindings
         binding = ActivityHostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Retrieves room data from previous intent
         val roomQuestion = intent.getStringExtra(ROOM_QUESTION_PARAMETER_KEY)!!
         val roomName = intent.getStringExtra(ROOM_NAME_PARAMETER_KEY)!!
 
+        // Gets the instance of the view model
         val viewModelFactory = HostViewModelFactory(roomName, roomQuestion)
         hostViewModel = ViewModelProvider(this, viewModelFactory)[HostViewModel::class.java]
 
+        // Sets up the page title and UI
         title = hostViewModel.roomName
-
         binding.hostQuestionContent.text = hostViewModel.roomQuestion
 
+        // Setup of the answers list
         val adapter = ListAdapter {}
         binding.hostAnswerList.adapter = adapter
         binding.hostAnswerList.layoutManager = LinearLayoutManager(this)
@@ -73,6 +77,7 @@ class HostActivity : AppCompatActivity() {
             }
         }
 
+        // Starts the BLE room advertising
         startAdvertising()
     }
 
@@ -138,6 +143,7 @@ class HostActivity : AppCompatActivity() {
 
     /**
      * This is the callback used during BLE connections
+     * When a clients connects, the host sends the room info
      */
     private val connectionLifecycleCallback: ConnectionLifecycleCallback =
         object : ConnectionLifecycleCallback() {

@@ -1,4 +1,4 @@
-package com.example.and_projet.view.activities
+package com.heigvd.and_projet.view.activities
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView

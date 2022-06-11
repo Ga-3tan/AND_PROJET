@@ -1,4 +1,4 @@
-package com.example.and_projet.utils
+package com.heigvd.and_projet.utils
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.and_projet.R
-import com.example.and_projet.model.ListRecord
+import com.heigvd.and_projet.model.ListRecord
 
 /**
  * Authors : Zwick Gaétan, Maziero Marco, Lamrani Soulaymane

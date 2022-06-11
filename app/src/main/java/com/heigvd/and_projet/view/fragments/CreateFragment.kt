@@ -1,4 +1,4 @@
-package com.example.and_projet.view.fragments
+package com.heigvd.and_projet.view.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.and_projet.view.activities.HostActivity
+import com.heigvd.and_projet.view.activities.HostActivity
 import com.example.and_projet.databinding.FragmentCreateBinding
 
 /**
@@ -27,13 +26,16 @@ class CreateFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Retrieves the UI bindings
         _binding = FragmentCreateBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        // OnClick listener on the create room button
         binding.createRoomBtn.setOnClickListener {
             val roomName = binding.createRoomNameInputField.text.toString()
             val question = binding.createRoomQuestionInputField.text.toString()
 
+            // Puts the room name and question in intent extras
             val intent = Intent(activity, HostActivity::class.java)
             intent.putExtra(HostActivity.ROOM_NAME_PARAMETER_KEY, roomName)
             intent.putExtra(HostActivity.ROOM_QUESTION_PARAMETER_KEY, question)
@@ -44,6 +46,9 @@ class CreateFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Called when the fragment UI is destroyed
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

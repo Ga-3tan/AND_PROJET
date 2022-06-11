@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.and_projet">
+    package="com.heigvd.and_projet">
 
     <!-- Required for Nearby Connections -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -24,15 +24,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AND_Projet">
         <activity
-            android:name=".view.activities.HostActivity"
+            android:name="com.heigvd.and_projet.view.activities.HostActivity"
             android:exported="false" />
         <activity
-            android:name=".view.activities.ParticipantActivity"
+            android:name="com.heigvd.and_projet.view.activities.ParticipantActivity"
             android:exported="false"
             android:label="@string/title_activity_participant"
             android:theme="@style/Theme.AND_Projet.NoActionBar" />
         <activity
-            android:name=".view.activities.MainActivity"
+            android:name="com.heigvd.and_projet.view.activities.MainActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
