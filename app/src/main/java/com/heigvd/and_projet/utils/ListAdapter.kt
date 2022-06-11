@@ -1,4 +1,4 @@
-package com.example.and_projet.utils
+package com.heigvd.and_projet.utils
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,11 +7,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.and_projet.R
-import com.example.and_projet.models.ListRecord
+import com.heigvd.and_projet.model.ListRecord
 
 /**
  * Authors : Zwick Gaétan, Maziero Marco, Lamrani Soulaymane
- * Date : 10.05.2022
+ * Date : 10.06.2022
  */
 class ListAdapter(_items: List<ListRecord> = listOf(), private val listener: (ListRecord) -> Unit) :
     RecyclerView.Adapter<ListAdapter.ViewHolder>() {
