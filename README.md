@@ -4,7 +4,18 @@
 
 ## Description du projet
 
-TODO
+Le but de ce projet de cours est de mettre en place et utiliser une
+fonctionnalité avancée du système Android. Parmi la liste des différentes idées
+que nous avions à choix, nous avons choisi le Bluetooth low energy (BLE).
+
+Notre application permet donc à un utilisateur qu'on appellera Host de créer une
+« room » en lui donnant un nom ainsi qu'une question. Un autre utilisateur,
+appelé Participant, pourra alors aller sur une liste des différentes rooms
+existantes et se connecter à la room qu'il souhaite rejoindre. Une fois la room
+rejoint, Participant pourra répondre à la question en replissant le champ de
+texte prévu à cet effet et Host recevra la réponse ce qui conduira Participant à
+quitter la room. Host ne retiendra que la première réponse de Participant si ce
+dernier voulait re-rentrer dans la room et répondre à nouveau à la question.
 
 ## Technologies utilisées
 
