@@ -94,4 +94,8 @@ est fait dans le ViewModel.
 
 ## Problèmes connus
 
-### (problèmes de déconnections ?)
+### Pas de redécouverte
+
+Lorsqu'un appareil à découvert l'annonceur, qu'il quitte l'application ou
+désactive le Bluetooth pour le réactiver, il n'est pas possible de redécouvrir
+l'annonceur.
