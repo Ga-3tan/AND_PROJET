@@ -3,6 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="?listPreferredItemHeightSmall"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/shape"
+    android:backgroundTint="@color/md_theme_light_primaryContainer"
+    android:layout_margin="5dp"
     >
 
     <TextView
@@ -10,12 +13,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title"
-        android:textSize="20sp"
+        android:textSize="24sp"
+        android:textColor="@color/md_theme_light_onPrimary"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/list_item_content"
-        android:paddingStart="10sp"
+        android:paddingStart="25sp"
         android:paddingEnd="10sp"/>
     
     <TextView
@@ -24,6 +28,7 @@
         android:layout_height="wrap_content"
         android:text="@string/content"
         android:textSize="18sp"
+        android:textColor="@color/md_theme_light_onPrimary"
         app:layout_constraintBaseline_toBaselineOf="@id/list_item_title"
         app:layout_constraintStart_toEndOf="@id/list_item_title"
         app:layout_constraintTop_toTopOf="parent"

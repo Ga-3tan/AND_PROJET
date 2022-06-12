@@ -40,8 +40,8 @@ class ParticipantActivity : AppCompatActivity() {
         // Sends answer payload on button click
         binding.participantAnswerButton.setOnClickListener {
             participantViewModel.sendAnswer(
-                binding.participantName.text.toString(),
-                binding.participantAnswerInput.text.toString(),
+                binding.participantNameEditText.text.toString(),
+                binding.participantAnswerInputEditText.text.toString(),
                 this@ParticipantActivity)
             finish()
         }

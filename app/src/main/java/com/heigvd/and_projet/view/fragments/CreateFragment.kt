@@ -32,8 +32,8 @@ class CreateFragment : Fragment() {
 
         // OnClick listener on the create room button
         binding.createRoomBtn.setOnClickListener {
-            val roomName = binding.createRoomNameInputField.text.toString()
-            val question = binding.createRoomQuestionInputField.text.toString()
+            val roomName = binding.createRoomNameInputFieldEditText.text.toString()
+            val question = binding.createRoomQuestionInputFieldEditText.text.toString()
 
             // Puts the room name and question in intent extras
             val intent = Intent(activity, HostActivity::class.java)

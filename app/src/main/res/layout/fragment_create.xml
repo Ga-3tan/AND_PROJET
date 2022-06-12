@@ -16,18 +16,27 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/create_room_name_input_field"/>
+        app:layout_constraintBottom_toTopOf="@id/create_room_name_input_field"
+        android:layout_margin="10dp"/>
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/create_room_name_input_field"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:inputType="textAutoComplete"
+        android:hint="@string/room_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/create_room_question_input_title"
         app:layout_constraintTop_toBottomOf="@+id/create_room_name_input_title"
         app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="" />
+        android:layout_margin="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/create_room_name_input_field_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textAutoComplete"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/create_room_question_input_title"
@@ -41,25 +50,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/create_room_question_input_field"/>
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/create_room_question_input_field"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
+        android:hint="@string/question"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/create_room_btn"
         app:layout_constraintTop_toBottomOf="@+id/create_room_question_input_title"
         app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="" />
+        android:layout_margin="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/create_room_question_input_field_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/create_room_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/create_room_question_input_field"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="10dp"
         android:text="@string/create"/>
 
 

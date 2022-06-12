@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     tools:context="com.heigvd.and_projet.view.activities.HostActivity">
 
     <TextView
@@ -31,7 +32,7 @@
         android:id="@+id/host_answer_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
+        android:paddingTop="25dp"
         android:paddingBottom="5dp"
         android:text="@string/answers"
         android:textStyle="bold"
@@ -42,7 +43,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/host_answer_list"
         android:layout_width="match_parent"
+        android:backgroundTint="@color/md_theme_light_inversePrimary"
         android:layout_height="0dp"
+        android:paddingTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/host_answer_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
