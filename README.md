@@ -29,22 +29,69 @@ de données comme l'heure ou la température.
 
 #### Google Nearby
 
-TODO
+Nearby est une plateforme qui facilite la communication entre les appareils en
+utilisant le Bluetooth, le Wi-Fi, l'IP et l'audio.
+
+Plus particulièrement, nous avons utilisé Nearby connection qui est une API de
+mise en réseau peer-to-peer pour découvrir, connecter et échanger des données
+entre des appareils se trouvant à proximité. Ceci nous permet de gérer les
+différentes phases nécessaires à la communication entre les appareils:
+
+1. Annonce et découverte
+
+L'annonceur montre qu'il est disponible pour une connection et quand un appareil
+le découvre, il pourra lui demander de se connecter.
+
+2. Connexion
+
+Pour se connection, le découvreur doit faire une requête de connexion et
+l'annonceur pourra alors choisir de l'accepter ou de la refuser. Une fois la
+connexion établie, les deux appareils pourront commencer à échanger des données.
+
+3. Échange de données
+
+À cette étape, la connexion est symétrique et les deux appareils peuvent 3 types
+d'échanges:
+
+- `BYTES`: Les données sont envoyées sous de tableau d'octets limités à 32k,
+  utile pour envoyer des métadonnées ou des messages de contrôles,
+- `FILE`: Pour envoyer des fichiers de tailles arbitraires,
+- `STREAM`: Un flux de données est généré à la volée comme pour un flux audio ou
+  vidéo.
+
+4. Déconnexion
+
+Et pour terminer, les deux appareils se déconnectent l'un de l'autre.
 
 ## Difficultés
 
 ### Mise à jour des listes
 
-La mise à jour de la liste basée sur une live data mutable ne se faisait pas. Après plusieurs tentatives nous avons finalement reussi à faire fonctionner la mise à jour de la liste. Il faut cependant faire une copie de la liste pour la reposter dans la live data.
+La mise à jour de la liste basée sur une live data mutable ne se faisait pas.
+Après plusieurs tentatives nous avons finalement réussi à faire fonctionner la
+mise à jour de la liste. Il faut cependant faire une copie de la liste pour la
+reposter dans la live data.
 
 ### Utilisation des ViewModels et du contexte
 
-Lors de la phase de factorisation du code. Nous avons voulu placer la logique liée aux connections BLE et échanges de données dans les ViewModels des activités et fragments. Cependant, la plupart de ces fonctionnalités ont besoin du contexte de l'application pour effectuer des opérations. Il n'était pas envisageable de stocker le contexte dans les ViewModels car si l'activité est stoppée, la référence vers le contexte n'est plus valide.
+Lors de la phase de factorisation du code. Nous avons voulu placer la logique
+liée aux connections BLE et échanges de données dans les ViewModels des
+activités et fragments. Cependant, la plupart de ces fonctionnalités ont besoin
+du contexte de l'application pour effectuer des opérations. Il n'était pas
+envisageable de stocker le contexte dans les ViewModels car si l'activité est
+stoppée, la référence vers le contexte n'est plus valide.
 
-Nous avons premièrement envisagé d'utiliser AndroidViewModel au lieu de ViewModel car il est dit que ces alternatives possèdent une référence vers le contexte. Cependant, après avoir changé les ViewModel en AndroidViewModel, le BLE ne fonctionnait plus.
+Nous avons premièrement envisagé d'utiliser AndroidViewModel au lieu de
+ViewModel car il est dit que ces alternatives possèdent une référence vers le
+contexte. Cependant, après avoir changé les ViewModel en AndroidViewModel, le
+BLE ne fonctionnait plus.
 
-Finalement nous avons décidé garder les éléments nécessitant le contexte dans l'activité et de placer dans le ViewModel uniquement la logique intéragissant avec les données de l'application. Par exemple, la connection à un host se fait dans le code de l'activité mais l'ajout des données reçues par BLE dans la liste est fait dans le ViewModel.
+Finalement nous avons décidé garder les éléments nécessitant le contexte dans
+l'activité et de placer dans le ViewModel uniquement la logique interagissant
+avec les données de l'application. Par exemple, la connection à un host se fait
+dans le code de l'activité mais l'ajout des données reçues par BLE dans la liste
+est fait dans le ViewModel.
 
 ## Problèmes connus
 
-### (problèmes de déconnection ?)
+### (problèmes de déconnections ?)
