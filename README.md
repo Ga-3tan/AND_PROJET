@@ -98,4 +98,6 @@ Lorsqu'un Client se connecte à une Room, ce dernier attend qu'on lui envoie le 
 
 ## Conclusion
 
-Malgré le fait que l'application ne soit pas sans défauts, elle reste utilisables pour son but principal qui était de faire une application permettant à un Host d'ouvrir un vote et les Participant de le rejoindre et d'y voter. Le BLE est une technologie compliquée à utiliser toute seule avec Android cependant l'API Nearby Connections a été d'une grande aide pour établir des connexions facile et rapide entre les appareils sans trop se soucier des détails bas-niveaux du BLE.
+Malgré le fait que l'application ne soit pas sans défauts, elle reste utilisables pour son but principal qui était de permettre à un Host d'ouvrir un vote et à des Participant de le rejoindre et d'y voter. 
+
+Le BLE est en réalité une technologie compliquée à utiliser toute seule (sans librairie / API) avec Android cependant l'API Nearby Connections a été d'une grande aide pour établir des connexions facile et rapide entre les appareils sans trop se soucier des détails bas-niveaux du BLE.
