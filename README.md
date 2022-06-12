@@ -21,7 +21,11 @@ dernier voulait re-rentrer dans la room et répondre à nouveau à la question.
 
 ### BLE
 
-TODO
+BLE est un standard ouvert basé sur Bluetooth qui consomme jusqu'à 10 fois moins
+d'énergie que le Bluetooth de base, ce qui le rend idéal pour des appareils tels
+que les smartwatches, appareils de surveillance médicale, car il est surtout
+utilisé pour des applications n'ayant pas besoin d'échanger de grandes quantités
+de données comme l'heure ou la température.
 
 #### Google Nearby
 
