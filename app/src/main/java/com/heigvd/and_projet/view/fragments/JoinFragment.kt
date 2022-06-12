@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.heigvd.and_projet.view.activities.ParticipantActivity
-import com.example.and_projet.databinding.FragmentJoinBinding
+import com.heigvd.and_projet.databinding.FragmentJoinBinding
 import com.heigvd.and_projet.utils.ListAdapter
 import com.heigvd.and_projet.viewmodel.JoinViewModel
 import com.google.android.gms.nearby.Nearby

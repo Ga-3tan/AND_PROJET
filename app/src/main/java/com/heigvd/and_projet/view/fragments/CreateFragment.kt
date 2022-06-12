@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.heigvd.and_projet.view.activities.HostActivity
-import com.example.and_projet.databinding.FragmentCreateBinding
+import com.heigvd.and_projet.databinding.FragmentCreateBinding
 
 /**
  * Authors : Zwick Gaétan, Maziero Marco, Lamrani Soulaymane

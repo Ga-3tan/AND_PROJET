@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.heigvd.and_projet.viewmodel.HostViewModel
-import com.example.and_projet.databinding.ActivityHostBinding
+import com.heigvd.and_projet.databinding.ActivityHostBinding
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
 import com.google.android.gms.tasks.OnFailureListener

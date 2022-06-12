@@ -3,7 +3,7 @@ package com.heigvd.and_projet.view.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import com.example.and_projet.databinding.ActivityParticipantBinding
+import com.heigvd.and_projet.databinding.ActivityParticipantBinding
 import android.util.Log
 import com.heigvd.and_projet.viewmodel.ParticipantViewModel
 import com.heigvd.and_projet.model.ListRecord

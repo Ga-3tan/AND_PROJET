@@ -7,8 +7,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.and_projet.R
-import com.example.and_projet.databinding.ActivityMainBinding
+import com.heigvd.and_projet.R
+import com.heigvd.and_projet.databinding.ActivityMainBinding
 
 /**
  * Authors : Zwick Gaétan, Maziero Marco, Lamrani Soulaymane
